@@ -1,0 +1,41 @@
+pipeline:
+  name: Harness_ci_venkay
+  identifier: Harness_ci_venkay
+  projectIdentifier: SFTY_Training
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: Venky_git_connector
+        repoName: harness_ci
+        build: <+input>
+  stages:
+    - stage:
+        name: build
+        identifier: build
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: false
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: maven build
+                  identifier: maven_build
+                  spec:
+                    shell: Sh
+                    command: |-
+                      sudo yum install maven -y
+                      mvn clean package
+                      mvn build Package
